@@ -1,0 +1,372 @@
+body {
+    margin:0;
+    font-family: 'Roboto' ;
+     color: #59597C;
+}
+.background-radial{
+    height: 100vh;
+    width: 100vw;
+    top: auto;
+    display: flex;
+    position: absolute;
+    z-index: -1;
+}
+.background-radial #grad1{
+   justify-self: end;
+  width:100vw;
+  height:25vh;
+  background: radial-gradient(circle at top right,  rgba(57, 100, 229,0.1), #ffffff 60%)
+}
+.background-radial #grad2{
+    justify-self: start;
+    width:100vw;
+    height:25vh;
+    background: radial-gradient(circle at center left,  rgba(255, 186, 130,0.1), #ffffff 30%)
+ }
+ .background-radial #grad3{
+    justify-self: end;
+    width:100vw;
+    height:25vh;
+    background: radial-gradient(circle at top right,  rgba(57, 100, 229,0.1), #ffffff 45%)
+
+
+ }
+ .background-radial #grad4{
+    justify-self: start;
+    width:100vw;
+  height:25vh;
+  background: radial-gradient(circle at center left,  rgba(255, 186, 130,0.1), #ffffff 66%)
+
+ }
+ .table-borderless > tbody > tr > td,
+ .table-borderless > tbody > tr > th,
+ .table-borderless > tfoot > tr > td,
+ .table-borderless > tfoot > tr > th,
+ .table-borderless > thead > tr > td,
+ .table-borderless > thead > tr > th {
+    padding: 2px;
+    border: none;
+    /* vertical-align: middle; */
+ }
+ .borderless td, .borderless th {
+   border: none;
+}
+ .smw-logo{
+    height: 50px;
+    width: 136px;
+ }
+
+ div.content{
+    padding: 5vw;
+    font-weight: 700;
+    margin-top: 3vw;
+    width: 100vw;
+ }
+ h1.f{
+   font-size: 5vw;
+ }
+
+ div.jtiket{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+ }
+
+ div.jtiket .single-tiket{
+    height: max-content;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 16px;
+    margin: 5vw 0 5vw 0;
+    box-shadow:0px 10px 16px  rgba(57, 100, 229,0.2);
+    padding: 2vw 3vw;
+    display: block;
+    transition: transform 0.1s;
+ }
+ div.jtiket .single-tiket:hover {
+   transform: scale(1.02);
+ }
+ div.tiket-head{
+   display: flex;
+ }
+ div.jtiket .single-tiket span.title{
+   justify-self: start;
+   font-size: 5vw;
+ }
+ div.jtiket .single-tiket div.price{
+   display:block;
+   margin-left: auto;
+ }
+ div.jtiket .single-tiket label{ 
+   font-size: 3vw;
+   color: #9695A8;
+   display: block ;
+   margin: 0;
+   margin-right: auto;
+   
+ }
+ span.harga{ 
+   font-size: 4vw;
+   font-weight: 700;
+   color: #633C33;
+ }
+ div.jtiket .single-tiket div.deskripsi{ 
+   font-size: 4w;
+   color: #9695A8;
+   font-weight: 700;
+ }
+ div.tiket-footer{
+   font-size: 3vw;
+   padding: 4vw 0;
+ }
+ div.tiket-footer div.buy{
+   display: inline;
+   float: right;
+ }
+ div.tiket-footer span.available{
+   background-color: rgba(255, 186, 130, 0.15);
+   color: #FFBA82;
+   padding: 1vw 3vw;
+   border-radius: 10px;
+ }
+ div.tiket-footer span.buy{
+   background-color: #969bffde;
+   padding: 1vw 3vw;
+   border-radius: 10px;
+ }
+ div.tiket-footer span.buy:hover{
+   background-color: #5860fcde;
+   ;
+ }
+ div.tiket-footer span.buy a{
+ text-decoration: none;
+ color: #fff;
+ }
+ .i-orange{
+   color : rgba(255, 186, 130);
+}
+.pointer{
+   cursor: pointer;
+}
+/* smw card */
+
+div.smw-card{
+   margin: 2vw 0 4vw 0 ;
+   background-color: rgb(255, 255, 255);
+   box-shadow:0px 10px 16px  rgba(57, 100, 229,0.2);
+   border-top-right-radius: 10px;
+   border-top-left-radius: 10px;
+   padding: 1vw 2vw;
+   border-bottom-left-radius: 3px;
+   border-bottom-right-radius: 3px;
+
+}
+div.smw-card div.smw-card-header{
+   border-bottom: 1px dashed #59597C;
+   border-color: rgba(255, 186, 130, 0.318);
+   padding: 5px 0;
+}
+div.smw-card div.smw-card-body{
+   padding: 1vw ;
+}
+div.qty{
+   font-size: 5vw;
+}
+
+ div.smw-card-body .card-label{
+   border-color: rgba(255, 186, 130, 0.318);
+}
+.card-label{
+   font-size: 3vw;
+   color: rgba(57, 100, 229);;
+}
+div.smw-card-body span.harga{
+   display: block;
+}
+.form-group label{ 
+ font-size: 3.5vw;
+}
+
+      /*card tgl input */
+      .input-date {
+         position: relative;
+         display: block;
+       }
+       .hidden-input {
+         position: absolute;
+         opacity: 0;
+         width: 100%;
+         height: 100%;
+         cursor: pointer;
+         z-index:2;
+       }
+   
+       .date-label {
+         position: relative; 
+         display: block;
+         font-size: 3.5vw;
+         cursor: pointer;
+         z-index: 1;
+       }
+   
+       /* .date-label:hover {
+         background-color: #ff0303fc;
+       } */
+
+ div.info{
+   font-size: 3.5vw;
+ }
+ div.info p{
+   text-align: center;
+ }
+ .f12{
+   font-size: 12px;
+ }
+ .btn-orange{
+   color: #fff;
+   text-shadow: 2px 2px rgba(255, 251, 248, 0.131);
+    background-color: rgb(253, 170, 102);
+    border-color: rgba(255, 186, 130,0.5);
+    border-radius: 5px;
+    float: auto;
+ }
+
+@media (min-width:320px)  { 
+
+}
+@media (min-width:481px)  {
+
+ }
+@media (min-width:641px)  { 
+
+ }
+@media (min-width:768px)  { 
+   div.content{
+      padding-top: 1vw;
+   }
+   h1.f{
+    font-size: 4vw;
+   }
+   div.jtiket .single-tiket{
+    height: 18vw; 
+    margin: 20px 0 20px 0;
+    }
+    .lg-100{
+       width: 100%;
+     }
+   div.jtiket .single-tiket span.title{
+    justify-self: start;
+    font-size: 2.5vw;
+  }
+  div.jtiket .single-tiket div.price{
+    display:block;
+    margin-left: auto;
+  }
+  div.jtiket .single-tiket label{ 
+    font-size: 1vw;
+  }
+  div.jtiket .single-tiket div.price span.harga{ 
+    font-size: 2vw;
+  }
+  div.tiket-footer{
+    font-size: 1vw;
+    padding: 4vw 0;
+  }
+  div.tiket-footer div.buy{
+    display: inline;
+    float: right;
+  }
+  div.tiket-footer span.available{
+    padding: 1vw 2vw;
+    border-radius: 10px;
+  }
+  div.tiket-footer span.buy{
+    padding: 1vw 3vw;
+    border-radius: 10px;
+  }
+ }
+@media (min-width:1025px) { 
+    div.content{
+        padding-top: 1vw;
+     }
+     h1.f{
+      font-size: 4vw;
+     }
+     div.jtiket .single-tiket{
+      height: 18vw; 
+      margin: 20px 0 20px 0;
+      }
+      .lg-100{
+         width: 100%;
+       }
+     div.jtiket .single-tiket span.title{
+      justify-self: start;
+      font-size: 2.5vw;
+    }
+    div.jtiket .single-tiket div.price{
+      display:block;
+      margin-left: auto;
+    }
+    div.jtiket .single-tiket label{ 
+      font-size: 1vw;
+    }
+    div.jtiket .single-tiket div.price span.harga{ 
+      font-size: 2vw;
+    }
+    div.tiket-footer{
+      font-size: 1vw;
+      padding: 4vw 0;
+    }
+    div.tiket-footer div.buy{
+      display: inline;
+      float: right;
+    }
+    div.tiket-footer span.available{
+      padding: 1vw 2vw;
+      border-radius: 10px;
+    }
+    div.tiket-footer span.buy{
+      padding: 1vw 2vw;
+      border-radius: 10px;
+    }
+
+ }
+@media (min-width:1281px) { 
+    div.content{
+              height: 18vw; 
+         padding-top: 1vw;
+         margin: 20px 0 20px 0;
+     }
+     h1.f{
+      font-size: 4vw;
+     }
+    .lg-100{
+      width: 100%;
+    }
+    div.jtiket .single-tiket{
+      height: 18vw; 
+      margin: 20px 0 20px 0;
+      }
+      div.tiket-footer{
+         font-size: 1vw;
+         padding: 4vw 0;
+       }
+       div.tiket-footer div.buy{
+         display: inline;
+         float: right;
+       }
+       div.tiket-footer span.available{
+         padding: 1vw 2vw;
+         border-radius: 10px;
+       }
+       div.tiket-footer span.buy{
+         padding: 1vw 2vw;
+         border-radius: 10px;
+       }
+ }
+
+ .footer {
+   background-color: rgba(57, 100, 229, 0.1);
+   padding: 20px;
+   text-align: center;
+ }
