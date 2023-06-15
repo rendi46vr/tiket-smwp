@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\midtansCon;
 use App\Http\Controllers\pembelianCon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +38,7 @@ Route::post('validation', function (Request $request) {
 });
 
 Route::get('/', [pembelianCon::class, 'index']);
+
 Route::get('form-pembelian/{slug}', [pembelianCon::class, 'pembelian']);
 Route::post('order', [pembelianCon::class, 'order']);
 Route::post('cqty/{qty}', [pembelianCon::class, 'qty']);

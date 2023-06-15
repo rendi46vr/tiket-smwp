@@ -4,17 +4,15 @@ $(document).on('click', '.reqbayar', function() {
         var act = $(this).data('whatever');
         window.snap.pay(act, {
             onSuccess: function(result) {
-                console.log(result);
-                trig('#se', '#bb');
+                alert("Tiket akan dikirimkan di Email");
+            window.location.href = baseUri('download/')+t.data('ind');
             },
             onPending: function(result) {
                 /* You may add your own implementation here */
                 alert("Menuggu Pembayaran");
-                console.log(result);
             },
             onError: function(result) {
 
-                console.log(result);
                 alert("payment failed!");
                 trig('#pn', '#bb');
             },
@@ -36,7 +34,8 @@ $(document).ready(function(){
     qtyt.on('click',function(){
         let qty = +qtyq.text();
         $.isNumeric(qty) ? '':qty=1;
-        qtyq.text(qty+1)
+        qtyq.text(qty+1),
+        $('.msgqty').val(qty+1)
  
         let data = qty+1
 
@@ -48,6 +47,8 @@ $(document).ready(function(){
         if(qty >1){
             tt = qty-1 
             qtyq.text(tt)
+        $('.msgqty').val(tt)
+
             edit('cqty/'+tt,'span.harga span');
         }
 

@@ -55,7 +55,7 @@
                             Total Tiket
                         </labe>
                     </td>
-                    <td><label class="date-label tes123">{{$tjual->totalbayar}}
+                    <td><label class="date-label tes123">{{$tjual->qty}}
                             </labe>
                     </td>
                 </tr>
@@ -80,7 +80,7 @@
     </div>
     <div class="smw-card-body">
         <div class="d-flex justify-content-center mt-4">
-            <button class="btn btn-orange mb-4 resetFalse reqbayar" data-whatever="{{$tjual->token}}">Bayar</button>
+            <button class="btn btn-orange mb-4 resetFalse reqbayar" data-whatever="{{$tjual->token}}" data-ind="{{$tjual->id}}">Bayar</button>
         </div>
     </div>
     <div class="smw-card-footer text-muted">

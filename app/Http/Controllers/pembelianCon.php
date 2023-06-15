@@ -5,20 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\tiket;
 use App\Models\tjual;
+use App\Models\tjual1;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class pembelianCon extends Controller
 {
     public function index()
     {
+        if (Session::has('bayar')) {
+            $data = tjual::find(session::get('bayar'));
+            if ($data->status == 2) {
+                session::forget('bayar');
+                return redirect('/');
+            }
+            return redirect('pembayaran/' . session::get('bayar'));
+        }
         $tiket = tiket::all();
         // $tjual = tjual::all();
         return view('index', compact('tiket'));
     }
     public function pembelian($slug)
     {
+        if (Session::has('bayar')) {
+            $data = tjual::find(session::get('bayar'));
+            if ($data->status == 2) {
+                session::forget('bayar');
+                return redirect('/');
+            }
+            return redirect('pembayaran/' . session::get('bayar'));
+        }
         try {
             $tiket = tiket::where('slug', $slug)->firstOrFail();
             session()->put('paket', $slug);
@@ -59,6 +78,9 @@ class pembelianCon extends Controller
             ]);
             $data->token = $token;
             $data->save();
+            Session::put('bayar', $data->id);
+            // Cookie::queue('bayar', $data->id, 1440);
+
             return response()->json([
                 "status" => true,
                 "href" => url('pembayaran/' . $data->id)
@@ -89,14 +111,17 @@ class pembelianCon extends Controller
     }
     public function download($slug)
     {
-        $tjual = tjual::find($slug);
-        $qr = base64_encode(QrCode::style('round')->size(100)->generate($tjual->id));
-        // return $qr = base64_encode(QrCode::generate($tjual->id));
+        $tjual = tjual::with('tjual1')->find($slug);
+        if ($tjual->status == 2) {
 
-        $pdf = Pdf::loadView('download', compact('qr'))->setPaper('A8', 'portrait')
-            ->setWarnings(false)
-            ->save('myfile.pdf');
-        return $pdf->stream();
+            // $qr = base64_encode(QrCode::style('round')->size(100)->generate($tjual->id));
+            //  $qr = base64_encode(QrCode::generate($tjual->id));
+            $pdf = Pdf::loadView('download', compact('tjual'))->setPaper('A8', 'portrait')
+                ->setWarnings(false);
+            return $pdf->download('tiket.pdf');
+        } elseif ($tjual->status == 1) {
+            return redirect('pembayaran/' . $tjual->id);
+        }
     }
 
 

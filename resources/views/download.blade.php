@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'> -->
-    <link rel="stylesheet" href="{{public_path('font-awesome-4.7.0/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{
+                public_path('font-awesome-4.7.0/css/font-awesome.min.css')
+            }}" />
     <style>
         .page-break {
             page-break-after: always;
@@ -16,7 +18,7 @@
             width: 100%;
             margin-top: -40px;
             font-size: 10px;
-            font-family: 'Roboto';
+            font-family: "Roboto";
         }
 
         div.tiket {
@@ -27,7 +29,6 @@
 
         div.tiket .img {
             display: block;
-
         }
 
         div.tiket .img img {
@@ -72,7 +73,6 @@
             line-height: 1mm;
             font-size: 7px;
             width: 50%;
-
         }
 
         .right {
@@ -80,31 +80,45 @@
         }
     </style>
 </head>
-<?php  ?>
 
 <body>
-    <div class="tiket">
-        <div class="logo" style="margin-left:auto; margin-right:auto; text-align:center;">
-            <img src="smw-b.png" alt="">
+    <?php
+
+    use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+    $i = 0;
+    $count = $tjual->tjual1->count();
+    ?>
+    @foreach($tjual->tjual1 as $tiket)
+    <?php $i++; ?>
+    <div class="tiket @if($i != $count)page-break @endif">
+        <div class="logo" style="
+                    margin-left: auto;
+                    margin-right: auto;
+                    text-align: center;
+                ">
+            <img src="smw-b.png" alt="" />
         </div>
         <div class="img">
-            <img class="center" src="data:image/png;base64,' . {{$qr}} . '">
-            <p>Tanggal berlaku : 2023/04/01</p>
-            <h3 class="type"> Regular Day</h3>
+            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::generate($tiket->id)); }} . '" />
+            <p>Tanggal berlaku : {{$tjual->tgl}}</p>
+            <h3 class="type">Regular Day</h3>
         </div>
         <div class="footer">
             <div class="contact">
-                <p style="color:forestgreen;">Whatsapp </p>
+                <p style="color: forestgreen">Whatsapp</p>
                 <p>+62810293821083</p>
             </div>
             <div class="contact right">
-                <p style="line-height: 2mm;">
-                    <font style="color: deeppink; line-height:2mm;">Instagram</font> @maitreyawira
-                    <br> schoolpalembang
+                <p style="line-height: 2mm">
+                    <font style="color: deeppink; line-height: 2mm">Instagram</font>
+                    @maitreyawira <br />
+                    schoolpalembang
                 </p>
             </div>
         </div>
     </div>
+    @endforeach
 </body>
 
 </html>
