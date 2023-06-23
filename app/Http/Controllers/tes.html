@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                background-color: #f2f2f2;
+            }
+            div.flex {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .menu-list {
+                list-style: none;
+                padding: 0;
+            }
+
+            .menu-list li {
+                position: relative;
+                margin-bottom: 10px;
+                font-size: 18px;
+                font-weight: 700;
+                padding: 5px 5px 5px 20px;
+                border-radius: 2px;
+                transition: background-color 0.3s;
+            }
+
+            .menu-list li:hover {
+                background-color: rgba(255, 255, 255, 0.7);
+            }
+
+            .menu-list li:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0px;
+                height: 100%;
+                width: 3px;
+                background-color: black;
+            }
+            .menu-list li:nth-child(1):before {
+                background-color: red;
+            }
+
+            .menu-list li:nth-child(2):before {
+                background-color: blue;
+            }
+
+            .menu-list li:nth-child(3):before {
+                background-color: green;
+            }
+
+            .menu-list li:nth-child(4):before {
+                background-color: orange;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex">
+            <ul class="menu-list">
+                <li>Menu 1</li>
+                <li>Menu 2</li>
+                <li>Menu 3</li>
+                <li>Menu 4</li>
+            </ul>
+        </div>
+    </body>
+</html>

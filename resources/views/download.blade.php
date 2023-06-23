@@ -29,12 +29,16 @@
 
         div.tiket .img {
             display: block;
+            width: 100%;
         }
 
         div.tiket .img img {
             display: flex;
             align-items: center;
             margin-left: 1mm;
+            margin-left: -10px;
+            margin-bottom: 0px;
+            padding-top: 0px;
         }
 
         div.tiket .img p {
@@ -42,9 +46,20 @@
             margin: 1mm 0;
         }
 
-        div.logo img {
-            width: 15mm;
-            margin: 2mm 2mm 2mm 0;
+        div.tiket .img p.title {
+            margin-left: -10px;
+            text-align: center;
+        }
+
+        div.logo p.title {
+            margin-left: -10px;
+            margin-top: 0px;
+            margin-right: -10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 0px;
+            padding-bottom: 0;
         }
 
         table {
@@ -58,6 +73,7 @@
         h3 {
             text-align: center;
             font-size: 12px;
+            margin: 1px 0;
         }
 
         div.footer {
@@ -68,11 +84,12 @@
         }
 
         div.contact {
-            display: inline-flex;
-            position: absolute;
+            display: block;
             line-height: 1mm;
-            font-size: 7px;
-            width: 50%;
+            font-size: 6px;
+            font-weight: bold;
+            padding-left: 4px;
+            text-align: center;
         }
 
         .right {
@@ -85,6 +102,7 @@
     <?php
 
     use SimpleSoftwareIO\QrCode\Facades\QrCode;
+    use Illuminate\Support\Facades\Storage;
 
     $i = 0;
     $count = $tjual->tjual1->count();
@@ -96,26 +114,33 @@
                     margin-left: auto;
                     margin-right: auto;
                     text-align: center;
+                    
                 ">
-            <img src="smw-b.png" alt="" />
+            <p class="title">
+                Sriwijaya <br> Latern Festival 2023
+            </p>
+            <p style="margin-top:0px; margin-left: -10; margin-right: -10; font-size:9px; font-weight:bold;"><u> Lapangan Sekolah Maitreyawira </u></p>
         </div>
+        <!-- format('png')->mergeString(Storage::get('/bb.png'), .3)-> -->
         <div class="img">
-            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::generate($tiket->id)); }} . '" />
-            <p>Tanggal berlaku : {{$tjual->tgl}}</p>
-            <h3 class="type">Regular Day</h3>
+            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::errorCorrection('H')->format('png')->mergeString(Storage::get('/bb.png'), .3)->size(130)->generate($tiket->id)); }} . '" />
+            <h3 class="type">@if($tjual->tiket_id == 1)Regular Day @else Premium Day @endif</h3>
+            <div style="padding: 1px; border: 1px dashed #000; margin-top: 2px; margin-bottom: 0;margin-left:-10; margin-right:-10;">
+                <p style=" font-size:7px; font-weight:700;">@if($tjual->tiket_id != 1) Tiket berlaku pad Tanggal {{$tjual->tgl}} @else Tiket berlaku untuk hari Rabu-Jumat, kecuali hari libur nasional @endif</p>
+            </div>
         </div>
         <div class="footer">
             <div class="contact">
-                <p style="color: forestgreen">Whatsapp</p>
-                <p>+62810293821083</p>
+                <!-- <p style="color: forestgreen">Whatsapp</p> -->
+                IG : maitreyawiraschoolpalembang / sriwijayalanternnfestival
             </div>
-            <div class="contact right">
+            <!-- <div class="contact right">
                 <p style="line-height: 2mm">
                     <font style="color: deeppink; line-height: 2mm">Instagram</font>
                     @maitreyawira <br />
                     schoolpalembang
                 </p>
-            </div>
+            </div> -->
         </div>
     </div>
     @endforeach

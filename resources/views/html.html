@@ -33,3 +33,37 @@
         </div>
     </body>
 </html>
+<div class="col-lg-6 col-md-6">
+    <div class="smw-card-header"> <i class="fa fa-wpforms mr-1 i-orange" aria-hidden="true"></i>
+        Cetak Tiket
+    </div>
+    <form id="order">
+        @csrf
+        <div class="smw-card-body">
+            <labe class="card-label">
+                Tanggal Tiket
+            </labe>
+            <!-- <div class="input-date"> -->
+            <input type="date" id="inpdate" />
+            <label onclick="disableDates()">Klik untuk memilih tanggal</label>
+            <!-- <label for="input-date" onclick="showDatePicker()" class="date-label tes123">Mon, 10 Sep 2020</label> -->
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <labe class="card-label">
+                    Total Tiket
+                </labe>
+                <div class="qty">
+                    <span class="pointer kurang">
+                        <i class="fa fa-minus-circle " aria-hidden="true"></i>
+                    </span>
+                    <span class="quantity mr-2 ml-2">1</span>
+                    <span class="pointer tambah">
+                        <i class="fa fa-plus-circle i-orange" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input type="hidden" name="qty" value="1" class="msgqty">
+            </div>
+
+        </div>
+</div>

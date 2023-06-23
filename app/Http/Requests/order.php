@@ -26,7 +26,7 @@ class order extends FormRequest
         return [
             'qty' => 'required',
             'name' => 'required',
-            'tgl' => 'required',
+            'tgl' => '',
             'wa' => 'required:max:60',
             'email' => 'required|email:dns',
         ];
@@ -35,7 +35,6 @@ class order extends FormRequest
     {
         return [
             'qty.required' => "Total Tiket harus Diisi",
-            'tgl.required' => "Tanggal Tiket harus disii",
             'wa.required' => 'Whatsapp harus didisi',
             'name.required' => 'Nama wajib disii!',
             'email.required' => 'Email Harus Diisi',

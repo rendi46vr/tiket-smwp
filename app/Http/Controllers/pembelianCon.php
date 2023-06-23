@@ -18,14 +18,16 @@ class pembelianCon extends Controller
     {
         if (Session::has('bayar')) {
             $data = tjual::find(session::get('bayar'));
+
+            dd($data->id);
             if ($data->status == 2) {
                 session::forget('bayar');
                 return redirect('/');
             }
+            dd(session::all());
             return redirect('pembayaran/' . session::get('bayar'));
         }
         $tiket = tiket::all();
-        // $tjual = tjual::all();
         return view('index', compact('tiket'));
     }
     public function pembelian($slug)
@@ -48,15 +50,14 @@ class pembelianCon extends Controller
     }
     public function order(Request $request)
     {
-        $paket = tiket::where('slug', session('paket'))->first();
-
         $validasiData = $request->validate([
             'qty' => 'required',
             'name' => 'required',
-            'tgl' => 'required',
+            'tgl' => '',
             'wa' => 'required:max:60',
             'email' => ''
         ]);
+        $paket = tiket::where('slug', session('paket'))->first();
         $validasiData['tgljual'] = date('Y-m-d');
         $pool = '0123456789';
         $uniq = substr(str_shuffle(str_repeat($pool, 5)), 0, 8);
@@ -66,7 +67,6 @@ class pembelianCon extends Controller
         $validasiData['id'] = Str::uuid();
         $validasiData['tiket_id'] = $paket->id;
         $data = tjual::create($validasiData);
-
 
         if ($data) {
             $token = $this->getMidToken([
@@ -80,7 +80,6 @@ class pembelianCon extends Controller
             $data->save();
             Session::put('bayar', $data->id);
             // Cookie::queue('bayar', $data->id, 1440);
-
             return response()->json([
                 "status" => true,
                 "href" => url('pembayaran/' . $data->id)
@@ -98,7 +97,6 @@ class pembelianCon extends Controller
     }
     public function bayar($slug)
     {
-
         $tjual = tjual::find($slug);
 
         return view('bayar', compact('tjual'));
@@ -112,7 +110,8 @@ class pembelianCon extends Controller
     public function download($slug)
     {
         $tjual = tjual::with('tjual1')->find($slug);
-        if ($tjual->status == 2) {
+        // dd($tjual);
+        if ($tjual->status == 2 || $tjual->status == 4) {
 
             // $qr = base64_encode(QrCode::style('round')->size(100)->generate($tjual->id));
             //  $qr = base64_encode(QrCode::generate($tjual->id));
@@ -121,9 +120,11 @@ class pembelianCon extends Controller
             return $pdf->download('tiket.pdf');
         } elseif ($tjual->status == 1) {
             return redirect('pembayaran/' . $tjual->id);
+        } elseif ($tjual->status == 2) {
+            Session::forget('bayar');
+            return redirect('/');
         }
     }
-
 
     public function getMidToken($data = [])
     {

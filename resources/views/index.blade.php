@@ -25,9 +25,9 @@
                 </div>
 
                 <div class="tiket-footer">
-                    <span class="available">Available</span>
+                    <span class="available"> @if($t->status >0) Available @else Unavailable @endif</span>
                     <div class="buy">
-                        <span class="buy"><a href="form-pembelian/{{$t->slug}}"><i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>Beli</a></span>
+                        <span class="buy">@if($t->status > 0)<a href="form-pembelian/{{$t->slug}}"><i class="fa fa-shopping-cart mr-1" aria-hidden="true"></i>Beli</a>@else Tidak Tersedia @endif</span>
                     </div>
                 </div>
             </div>

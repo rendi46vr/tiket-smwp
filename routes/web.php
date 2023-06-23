@@ -4,7 +4,8 @@ use App\Http\Controllers\midtansCon;
 use App\Http\Controllers\pembelianCon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
-
+use App\Http\Controllers\UserController;
+use App\Models\tgltiket;
 use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,12 @@ Route::post('validation', function (Request $request) {
     $class = $request->class;
     $class = str_replace('/', '\\', $class);
     $my_request = new $class();
-    $validator = Validator::make($request->all(), $my_request->rules(), $my_request->messages());
+    if ($request->uniq) {
+        $rules = $my_request->rules([0 => $request->tgl, 1 => $request->jenis_tiket]);
+    } else {
+        $rules = $my_request->rules();
+    }
+    $validator = Validator::make($request->all(), $rules, $my_request->messages());
     $validator->setAttributeNames($my_request->attributes());
     if ($request->ajax()) {
         if ($validator->fails()) {
@@ -45,3 +51,20 @@ Route::post('cqty/{qty}', [pembelianCon::class, 'qty']);
 Route::get('pembayaran/{slug}', [pembelianCon::class, 'bayar']);
 Route::get('tiket/{slug}', [pembelianCon::class, 'tiket']);
 Route::get('download/{slug}', [pembelianCon::class, 'download']);
+
+Route::get('login', [UserController::class, "login"])->name('login');
+Route::post('proses_login', [UserController::class, "proses_login"]);
+Route::get('logout', [UserController::class, "logout"]);
+
+Route::get('dashboard', [UserController::class, "dashboard"]);
+Route::post('settiket', [UserController::class, "settiket"]);
+Route::get('ctiket', [UserController::class, "ctiket"]);
+Route::post('cetakTiket', [UserController::class, "cetakTiket"]);
+Route::get('test', function () {
+    $tgl2 = tgltiket::where('status', 2)->pluck('tgl')->toArray();
+    if (in_array('2023-09-25', $tgl2)) {
+        echo 'sukses';
+    } else {
+        echo 'gagal';
+    }
+});

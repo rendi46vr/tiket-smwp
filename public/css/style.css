@@ -31,6 +31,10 @@ body {
 
 
  }
+ /* 
+ rgba(57, 100, 229,0.1) 
+  rgba(255, 186, 130,0.1)
+ */
  .background-radial #grad4{
     justify-self: start;
     width:100vw;
@@ -212,7 +216,14 @@ div.smw-card-body span.harga{
        /* .date-label:hover {
          background-color: #ff0303fc;
        } */
-
+       .success-message {
+        background-color: #dcf8d7;
+        color: #4d721c;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        border: 1px solid #f5c6cb;
+    }
  div.info{
    font-size: 3.5vw;
  }
@@ -230,7 +241,12 @@ div.smw-card-body span.harga{
     border-radius: 5px;
     float: auto;
  }
-
+ .ft{
+  font-size:3vw;
+}
+.ftc{
+  color: #59597C;
+}
 @media (min-width:320px)  { 
 
 }
@@ -284,7 +300,64 @@ div.smw-card-body span.harga{
     padding: 1vw 3vw;
     border-radius: 10px;
   }
- }
+   /*   d */
+     
+   div.smw-card div.smw-card-body{
+    padding: 1vw ;
+  }
+  div.qty{
+    font-size: 2vw;
+  }
+
+  div.smw-card-body .card-label{
+    border-color: rgba(255, 186, 130, 0.318);
+  }
+  .card-label{
+    font-size: 1.5vw;
+    color: rgba(57, 100, 229);;
+  }
+  div.smw-card-body span.harga{
+    display: block;
+  font-size: 2vw;
+
+  }
+  .form-group label{ 
+  font-size: 1.5vw;
+  }
+
+   /*card tgl input */
+   .input-date {
+      position: relative;
+      display: block;
+    }
+    .hidden-input {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      z-index:2;
+    }
+
+    .date-label {
+      position: relative; 
+      display: block;
+      font-size: 2vw;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    /* .date-label:hover {
+      background-color: #ff0303fc;
+    } */
+
+    div.info{
+      font-size: 1vw;
+    }
+    .ft{
+      font-size: 2vw;
+    }
+    }
 @media (min-width:1025px) { 
     div.content{
         padding-top: 1vw;
@@ -329,11 +402,69 @@ div.smw-card-body span.harga{
       padding: 1vw 2vw;
       border-radius: 10px;
     }
+     /* smw-card */
+     
+     div.smw-card div.smw-card-body{
+      padding: 1vw ;
+    }
+    div.qty{
+      font-size: 2vw;
+    }
 
- }
+    div.smw-card-body .card-label{
+      border-color: rgba(255, 186, 130, 0.318);
+    }
+    .card-label{
+      font-size: 1.5vw;
+      color: rgba(57, 100, 229);;
+    }
+    div.smw-card-body span.harga{
+      display: block;
+    font-size: 2vw;
+
+    }
+    .form-group label{ 
+    font-size: 1.5vw;
+    }
+
+     /*card tgl input */
+     .input-date {
+        position: relative;
+        display: block;
+      }
+      .hidden-input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index:2;
+      }
+  
+      .date-label {
+        position: relative; 
+        display: block;
+        font-size: 2vw;
+        cursor: pointer;
+        z-index: 1;
+      }
+  
+      /* .date-label:hover {
+        background-color: #ff0303fc;
+      } */
+
+      div.info{
+        font-size: 1vw;
+      }
+      .ft{
+        font-size: 1vw;
+      }
+  }
 @media (min-width:1281px) { 
+  .ft{
+    font-size: 1vw;
+  }
     div.content{
-              height: 18vw; 
          padding-top: 1vw;
          margin: 20px 0 20px 0;
      }
@@ -363,10 +494,108 @@ div.smw-card-body span.harga{
          padding: 1vw 2vw;
          border-radius: 10px;
        }
- }
+       div.smw-card{
+        margin: 2vw 0 4vw 0 ;
+        background-color: rgb(255, 255, 255);
+        box-shadow:0px 10px 16px  rgba(57, 100, 229,0.2);
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        padding: 1vw 2vw;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+     
+     }
+     div.smw-card div.smw-card-header{
+        border-bottom: 1px dashed #59597C;
+        border-color: rgba(255, 186, 130, 0.318);
+        padding: 5px 0;
+     }
+     div.smw-card div.smw-card-body{
+        padding: 1vw ;
+     }
+     div.qty{
+        font-size: 5vw;
+     }
+     
+      div.smw-card-body .card-label{
+        border-color: rgba(255, 186, 130, 0.318);
+     }
+     .card-label{
+        font-size: 3vw;
+        color: rgba(57, 100, 229);;
+     }
+     div.smw-card-body span.harga{
+        display: block;
+     }
+     .form-group label{ 
+      font-size: 3.5vw;
+     }
+
+     /* smw-card */
+     
+    div.smw-card div.smw-card-body{
+      padding: 1vw ;
+    }
+    div.qty{
+      font-size: 2vw;
+    }
+
+    div.smw-card-body .card-label{
+      border-color: rgba(255, 186, 130, 0.318);
+    }
+    .card-label{
+      font-size: 1.5vw;
+      color: rgba(57, 100, 229);;
+    }
+    div.smw-card-body span.harga{
+      display: block;
+    font-size: 2vw;
+
+    }
+    .form-group label{ 
+    font-size: 1.5vw;
+    }
+
+     /*card tgl input */
+     .input-date {
+        position: relative;
+        display: block;
+      }
+      .hidden-input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index:2;
+      }
+  
+      .date-label {
+        position: relative; 
+        display: block;
+        font-size: 2vw;
+        cursor: pointer;
+        z-index: 1;
+      }
+  
+      /* .date-label:hover {
+        background-color: #ff0303fc;
+      } */
+
+      div.info{
+        font-size: 1vw;
+      }
+      }
 
  .footer {
    background-color: rgba(57, 100, 229, 0.1);
    padding: 20px;
+   
    text-align: center;
+   z-index : 2
  }
+ .m-form {
+  height: 25px;
+  padding: 2px;
+ }
+ 

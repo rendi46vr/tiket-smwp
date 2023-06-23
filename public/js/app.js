@@ -73,6 +73,7 @@ $(document).on('click', "button[type=submit]", function(e) {
     e.preventDefault()
     const form = $(this).closest('form')
     action =  form.attr('id');
+    c(form)
     console.log(action);
     name_class = 'App/Http/Requests/' + action;
     my_form = form
@@ -177,9 +178,9 @@ function validate(a,r, b=true) {
             } else {
                 var campos_error = [];
                 $.each(data.errors, function(key, data) {
-                    var campo = my_form.find('.msg' + key);
-                    var father = campo.parents('.vr-form');
-                    var next = father.find('.help-block')
+                    let campo = my_form.find('.msg' + key);
+                    let father = campo.parents('.vr-form');
+                    let next = campo.next();
                     father.removeClass('has-success');
                     father.addClass('has-error');
                     if(next.length > 0){
@@ -191,7 +192,7 @@ function validate(a,r, b=true) {
                 });
                 $.each(my_form.serializeArray(), function(i, field) {
                     if ($.inArray(field.name, campos_error) === -1) {
-                        var father = my_form.find('.msg' + field.name).parent('.vr-form');
+                        let father = my_form.find('.msg' + field.name).parent('.vr-form');
                         father.removeClass('has-error');
                         father.addClass('has-success'); 
                         father.find('.help-block').html('');
