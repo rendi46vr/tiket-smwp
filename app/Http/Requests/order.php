@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\tgltiket;
 
 class order extends FormRequest
 {
@@ -15,13 +16,18 @@ class order extends FormRequest
     {
         return false;
     }
+    public  $checkDate;
 
+    public function __construct()
+    {
+        $this->checkDate = tgltiket::where('status', 2)->pluck('tgl')->toArray();
+    }
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules($rules = [])
     {
         $data = [
             'qty' => 'required',
@@ -82,7 +88,9 @@ class order extends FormRequest
             'wa.required' => 'Whatsapp harus didisi',
             'name.required' => 'Nama wajib disii!',
             'email.required' => 'Email Harus Diisi',
-            'email.email' => 'Email harus valid'
+            'email.email' => 'Email harus valid',
+            'tgl.required' => "tiket berlaku hanya weekend dan libur nasional",
+            'tgl.max' => "tiket berlaku hanya weekend dan libur nasional",
         ];
     }
 

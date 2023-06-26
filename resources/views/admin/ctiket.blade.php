@@ -15,6 +15,9 @@
     }
 </script>
 @endsection
+@section('title')
+Cetak Tket -
+@endsection
 @section('content')
 @csrf
 <div class="smw-card">
@@ -44,7 +47,7 @@
                         <input type="number" name="qty" max="1000" id="" class="form-control msgqty" placeholder="1000" aria-describedby="helpId">
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-orange mb-4 resetFalse" type="submit">Simpan</button>
+                        <button class="btn btn-orange mb-4 " type="submit">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -53,7 +56,7 @@
             <div class="smw-card-header"> <i class="fa fa-wpforms mr-1 i-orange" aria-hidden="true"></i>
                 Tiket Tercetak
             </div>
-            <div class="smw-card-body">
+            <div class="smw-card-body dataTiket">
                 {!! $tiket !!}
             </div>
         </div>
@@ -61,7 +64,11 @@
 </div>
 <script type="text/javascript">
     function refreshData(res) {
+        $('.dataTiket').html(res);
+    }
 
+    function searchData() {
+        return null
     }
     $('input[name="qty"]').on('input', function() {
         var value = $(this).val();

@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('title')
+Setting -
+@endsection
 @section('script')
 <script>
     function disableDates() {

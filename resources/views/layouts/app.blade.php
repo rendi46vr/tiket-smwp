@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiket</title>
+    <title>@yield('title')Tiket Sriwijaya Latern Festival</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
@@ -42,7 +42,7 @@
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Home</a>
+                    <a class="nav-link text-dark" href="{{url('/')}}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#">Event Details</a>
@@ -54,12 +54,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{url('ctiket')}}">Cetak Tiket</a>
-                        <a class="dropdown-item" href="#">Tampil Penjualan</a>
+                        <a class="dropdown-item" href="{{url('penjualan')}}">Tampil Penjualan</a>
 
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Setting</a>
+                    <a class="nav-link text-dark" href="{{url('dashboard')}}">Setting</a>
                 </li>
 
                 @endif

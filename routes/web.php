@@ -62,6 +62,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('settiket', [UserController::class, "settiket"]);
         Route::get('ctiket', [UserController::class, "ctiket"]);
         Route::post('cetakTiket', [UserController::class, "cetakTiket"]);
+        Route::post('pagetiket/{page}', [UserController::class, "pagetiket"]);
+        Route::get('penjualan', [UserController::class, "penjualan"]);
+        Route::post('pagejual/{page}', [UserController::class, "pagejual"]);
+        Route::post('searchjual/{search}', [UserController::class, "searchjual"]);
     });
 });
 

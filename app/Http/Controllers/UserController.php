@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\tjual;
 use App\Models\tjual1;
+use App\Tools\Tools;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
+
+    protected $sess = 'searchjual';
     public function login()
     {
         // dd(session()->all());
@@ -82,10 +86,17 @@ class UserController extends Controller
         return view('admin.ctiket', compact('tiket'));
     }
 
-    public function datatiket($msg = null)
+    public function datatiket($msg = null, $page = 1)
     {
-        $tiket = tjual::where('status', 4)->orderby('created_at', 'desc')->paginate(10);
-        return view('admin.tabletiket', compact('tiket'))->render();
+
+        $tiket = tjual::where('status', 4)->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
+        $pagination = Tools::ApiPagination($tiket->lastPage(), $page, 'pagetiket');
+
+        return view('admin.tabletiket', compact('tiket', 'pagination'))->render();
+    }
+    public function pagetiket($page)
+    {
+        return $this->datatiket(null, $page);
     }
 
     public function cetakTiket(Request $request)
@@ -112,6 +123,41 @@ class UserController extends Controller
                 'status' => 0
             ]);
         }
-        return "yeah dude!";
+        return $this->datatiket();
+    }
+    public function penjualan()
+    {
+        $tiket = $this->datapenjualan();
+        return view('penjualan.jual', compact('tiket'));
+    }
+    public function datapenjualan($msg = null, $page = 1, $search = false)
+    {
+        $tiket = tjual::where('status', 2)->where(function ($e) use ($search) {
+            if ($search) {
+                $e->where('name', 'like', '%' . session($this->sess)['search'] . '%')
+                    ->orwhere('email', 'like', '%' . session($this->sess)['search'] . '%')
+                    ->orwhere('np', 'like', '%' . session($this->sess)['search'] . '%')
+                    ->orwhere('id', 'like', '%' . session($this->sess)['search'] . '%');
+            } else {
+                Session::forget($this->sess);
+            }
+        })->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
+        $pagination = Tools::ApiPagination($tiket->lastPage(), $page, 'pagejual');
+        // return print_r($tiket->count());
+        return view('penjualan.tablejual', compact('tiket', 'pagination'))->render();
+    }
+    public function pagejual($page)
+    {
+        if (Session::has($this->sess)) {
+            return $this->datapenjualan(null, $page, true);
+        } else {
+            return $this->datapenjualan(null, $page);
+        }
+    }
+
+    public function searchjual(Request $request)
+    {
+        Session::put($this->sess, $request->all());
+        return $this->datapenjualan(null, 1, true);
     }
 }

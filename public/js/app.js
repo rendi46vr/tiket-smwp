@@ -221,9 +221,7 @@ function doReq(act, data ={_token:tkn()}, callback, load= false, ) {
         url: baseUri(act),
         data: data,
         beforeSend: function() {
-            if(load){
-                callback(loading())
-            }
+          
         },
         success: function(result) {
             callback(result)
