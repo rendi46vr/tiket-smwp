@@ -15,15 +15,15 @@ class cek_login
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next,  ...$level)
+    public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
             return redirect('/login');
         }
         $user = Auth::user();
-        if (auth()->user() && in_array(auth()->user()->role, $level)) {
+        if (auth()->user()) {
             return $next($request);
         }
-        return redirect('dashboard');
+        return redirect('/');
     }
 }

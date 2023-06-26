@@ -33,30 +33,7 @@
             </div>
         </div>
         @endforeach
-        <div class="col-lg-6 col-md-6 col-12">
-            <div class="single-tiket">
-                <div class="tiket-head">
-                    <span class="title">Reguler Day</span>
-                    <div class="price">
-                        <label>Mulai Dari</label>
-                        <span class="harga">Rp. 12.500</span>
-                    </div>
-                </div>
-                <div class="deskripsi">
-                    <label>Pilihan hari</label>
-                    <span class="desc">
-                        Rabu, Kamis & Jumat
-                    </span>
-                </div>
 
-                <div class="tiket-footer">
-                    <span class="available">Available</span>
-                    <div class="buy">
-                        <span class="buy">Buy</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

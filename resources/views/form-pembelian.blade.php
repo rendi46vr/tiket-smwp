@@ -16,8 +16,16 @@
 </script>
 @endsection
 @section('content')
+<?php
+function rupiah($angka)
+{
+    $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+    return $hasil_rupiah;
+} ?>
 <form id="order">
     @csrf
+    <input type="hidden" name="uniq" value="sdndnfmfqw ehieknklsaudv19823h">
+    <input type="hidden" name="jenis_tiket" value="{{$tiket->id}}">
     <div class="row">
         <div class="col-lg-6 col-md-6">
             <div class="smw-card">
@@ -52,7 +60,7 @@
                             <labe class="card-label">
                                 Total Harga
                             </labe>
-                            <span class="harga">Rp. <span data-harga="{{$tiket->harga}}">{{$tiket->harga}}</span></span>
+                            <span class="harga"><span data-harga="{{$tiket->harga}}">{{rupiah($tiket->harga)}}</span></span>
                         </div>
                     </div>
                     <div class="col-12">

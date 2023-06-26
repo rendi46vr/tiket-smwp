@@ -84,7 +84,7 @@ class UserController extends Controller
 
     public function datatiket($msg = null)
     {
-        $tiket = tjual::where('status', 4)->get();
+        $tiket = tjual::where('status', 4)->orderby('created_at', 'desc')->paginate(10);
         return view('admin.tabletiket', compact('tiket'))->render();
     }
 
@@ -94,7 +94,6 @@ class UserController extends Controller
             'qty' => 'required',
             'tgl' => '',
             'jenis_tiket' => 'required|max:1',
-
         ]);
         $paket = tiket::find($validasiData['jenis_tiket']);
         $validasiData['tgljual'] = date('Y-m-d');

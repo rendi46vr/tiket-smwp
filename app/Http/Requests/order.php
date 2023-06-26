@@ -23,13 +23,57 @@ class order extends FormRequest
      */
     public function rules()
     {
-        return [
+        $data = [
             'qty' => 'required',
             'name' => 'required',
             'tgl' => '',
             'wa' => 'required:max:60',
             'email' => 'required|email:dns',
         ];
+
+        if (empty($rules)) {
+            $data = [
+                'qty' => 'required',
+                'name' => 'required',
+                'tgl' => '',
+                'wa' => 'required:max:60',
+                'email' => 'required|email:dns',
+            ];
+        } else {
+            if ($rules[1] == 2) {
+                if ($rules['0'] != null) {
+                    if (in_array($rules['0'], $this->checkDate)) {
+                        $data = [
+                            'qty' => 'required|max:5',
+                            'name' => 'required',
+                            'wa' => 'required:max:60',
+                            'email' => 'required|email:dns',
+                            'tgl' => '',
+                            'jenis_tiket' => 'required|max:1',
+                        ];
+                    } else {
+                        $data = [
+                            'qty' => 'required|max:5',
+                            'tgl' => 'required|max:1',
+                            'jenis_tiket' => 'required|max:1',
+                            'name' => 'required',
+                            'wa' => 'required:max:60',
+                            'email' => 'required|email:dns',
+                        ];
+                    }
+                } else {
+                    $data = [
+                        'qty' => 'required|max:5',
+                        'tgl' => 'required|number|max:1',
+                        'jenis_tiket' => 'required|max:1',
+                        'name' => 'required',
+                        'wa' => 'required:max:60',
+                        'email' => 'required|email:dns',
+                    ];
+                }
+            }
+        }
+        return $data;
     }
     public function messages()
     {

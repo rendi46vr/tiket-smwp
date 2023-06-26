@@ -4,6 +4,12 @@
 <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SET_YOUR_CLIENT_KEY_HERE"></script>
 @endsection
 @section('content')
+<?php
+function rupiah($angka)
+{
+    $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+    return $hasil_rupiah;
+} ?>
 <div class="row">
     <div class="col-lg-6 col-md-6">
         <div class="smw-card">
@@ -67,7 +73,7 @@
                                     Total Bayar
                                 </labe>
                             </td>
-                            <td>Rp. {{$tjual->totalbayar}}
+                            <td>{{rupiah($tjual->totalbayar)}}
                             </td>
                         </tr>
                     </tbody>
@@ -77,13 +83,14 @@
             </div>
         </div>
     </div>
-    <div class="col-6 col-md-6">
+    <div class="col-lg-6 col-md-6">
         <div class="smw-card">
             <div class="smw-card-header"> <i class="fa fa-wpforms mr-1 i-orange" aria-hidden="true"></i>
                 Pembayaran
             </div>
             <div class="smw-card-body">
                 <div class="d-flex justify-content-center mt-4">
+                    <a href="{{url('cancel/'.$tjual->id)}}" class="btn btn-danger mb-4 mr-4">Batal</a>
                     <button class="btn btn-orange mb-4 resetFalse reqbayar" data-whatever="{{$tjual->token}}" data-ind="{{$tjual->id}}">Bayar</button>
                 </div>
             </div>

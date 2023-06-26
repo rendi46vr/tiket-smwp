@@ -5,6 +5,7 @@
             <th>Tanggal input</th>
             <th>Tanggal Berlaku</th>
             <th>Jenis tiket</th>
+            <th>Qty</th>
             <th>Unduh</th>
         </tr>
     </thead>
@@ -12,11 +13,15 @@
         @foreach($tiket as $t)
         <tr>
             <td>{{$loop->iteration}}</td>
-            <td>{{$t->tgljual}}</td>
+            <td>{{$t->created_at}}</td>
             <td>{{$t->tgl}}</td>
             <td>{{$t->tiket_id == 1 ? "Regular Day" : "Premiu Day"}}</td>
+            <td>{{$t->qty}}</td>
             <td> <a href="{{url('download/'.$t->id)}}"> <i class="fa fa-download text-success" aria-hidden="true"></i></a></td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
+
+{!!$tiket->links()!!}

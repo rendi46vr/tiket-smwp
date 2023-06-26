@@ -51,15 +51,22 @@ Route::post('cqty/{qty}', [pembelianCon::class, 'qty']);
 Route::get('pembayaran/{slug}', [pembelianCon::class, 'bayar']);
 Route::get('tiket/{slug}', [pembelianCon::class, 'tiket']);
 Route::get('download/{slug}', [pembelianCon::class, 'download']);
+Route::get('cancel/{slug}', [pembelianCon::class, "cancelTransaction"]);
 
 Route::get('login', [UserController::class, "login"])->name('login');
 Route::post('proses_login', [UserController::class, "proses_login"]);
 Route::get('logout', [UserController::class, "logout"]);
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['cek_login']], function () {
+        Route::get('dashboard', [UserController::class, "dashboard"]);
+        Route::post('settiket', [UserController::class, "settiket"]);
+        Route::get('ctiket', [UserController::class, "ctiket"]);
+        Route::post('cetakTiket', [UserController::class, "cetakTiket"]);
+    });
+});
 
-Route::get('dashboard', [UserController::class, "dashboard"]);
-Route::post('settiket', [UserController::class, "settiket"]);
-Route::get('ctiket', [UserController::class, "ctiket"]);
-Route::post('cetakTiket', [UserController::class, "cetakTiket"]);
+
+
 Route::get('test', function () {
     $tgl2 = tgltiket::where('status', 2)->pluck('tgl')->toArray();
     if (in_array('2023-09-25', $tgl2)) {

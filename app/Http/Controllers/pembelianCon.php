@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
 class pembelianCon extends Controller
@@ -18,13 +19,10 @@ class pembelianCon extends Controller
     {
         if (Session::has('bayar')) {
             $data = tjual::find(session::get('bayar'));
-
-            dd($data->id);
             if ($data->status == 2) {
                 session::forget('bayar');
                 return redirect('/');
             }
-            dd(session::all());
             return redirect('pembayaran/' . session::get('bayar'));
         }
         $tiket = tiket::all();
@@ -93,14 +91,22 @@ class pembelianCon extends Controller
     public function qty($qty)
     {
         $paket = tiket::where('slug', session('paket'))->first();
-        return $paket->harga * $qty;
+        return $this->rupiah($paket->harga * $qty);
     }
     public function bayar($slug)
     {
-        $tjual = tjual::find($slug);
-
-        return view('bayar', compact('tjual'));
+        try {
+            $tjual = tjual::findOrFail($slug);
+            if ($tjual->status == 2) {
+                Session::forget('bayar');
+                return redirect('/');
+            }
+            return view('bayar', compact('tjual'));
+        } catch (\Throwable $th) {
+            return redirect('/');
+        }
     }
+
     public function tiket($slug)
     {
         $tjual = tjual::find($slug);
@@ -109,20 +115,18 @@ class pembelianCon extends Controller
     }
     public function download($slug)
     {
-        $tjual = tjual::with('tjual1')->find($slug);
-        // dd($tjual);
-        if ($tjual->status == 2 || $tjual->status == 4) {
-
-            // $qr = base64_encode(QrCode::style('round')->size(100)->generate($tjual->id));
-            //  $qr = base64_encode(QrCode::generate($tjual->id));
-            $pdf = Pdf::loadView('download', compact('tjual'))->setPaper('A8', 'portrait')
-                ->setWarnings(false);
-            return $pdf->download('tiket.pdf');
-        } elseif ($tjual->status == 1) {
+        try {
+            $tjual = tjual::with('tjual1')->findOrFail($slug);
+            if ($tjual->status ==  2 || $tjual->status == 4) {
+                $pdf = Pdf::loadView('download', compact('tjual'))->setPaper('A8', 'portrait')
+                    ->setWarnings(false);
+                Session::forget('bayar');
+                return $pdf->download('tiket.pdf');
+            } else {
+                abort(403);
+            }
+        } catch (\Throwable $th) {
             return redirect('pembayaran/' . $tjual->id);
-        } elseif ($tjual->status == 2) {
-            Session::forget('bayar');
-            return redirect('/');
         }
     }
 
@@ -148,5 +152,31 @@ class pembelianCon extends Controller
         );
         $snapToken = \Midtrans\Snap::getSnapToken($params);
         return $snapToken;
+    }
+    public function rupiah($angka)
+    {
+        $hasil = "Rp " . number_format($angka, 2, ',', '.');
+        return $hasil;
+    }
+
+    public function cancelTransaction($slug)
+    {
+        try {
+            $tjual = tjual::where('status', 1)->orWhere('status', 0)->findOrFail($slug);
+            // dd($tjual);
+            // return 'ok';
+            $cancel =  Http::withHeaders([
+                "Content-Type" => "application/json",
+                "Accept" => "application/json",
+                "Authorization" => "Basic " . base64_encode(env('MID_SKEY') . ":"),
+            ])->post(env('MID_SB') . "v2/" . $tjual->id . '/cancel');
+            if ($cancel['status_code'] == 200) {
+                Session::forget('bayar');
+                $tjual->update(['status' => -2]);
+            }
+            return redirect('/');
+        } catch (\Throwable $th) {
+            return redirect('/');
+        }
     }
 }
