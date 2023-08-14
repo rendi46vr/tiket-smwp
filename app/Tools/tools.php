@@ -4,7 +4,7 @@ namespace App\Tools;
 
 use stdClass;
 
-class Tools
+class tools
 {
     public static function ApiPagination($totalPage, $currentPage = 1, $pageName, $onDataTotal = false)
 
@@ -97,7 +97,7 @@ class Tools
     }
     public static function fRupiah($rupiah)
     {
-        $hasil_rupiah = "Rp " . number_format($rupiah, 2, ',', '.');
+        $hasil_rupiah = "Rp " . number_format($rupiah, 0, ',', '.');
         return $hasil_rupiah;
     }
 }

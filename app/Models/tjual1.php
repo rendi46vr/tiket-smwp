@@ -10,7 +10,7 @@ class tjual1 extends Model
 {
     use HasFactory;
     public $incrementing = false;
-    protected $fillable = ['id', 'tjual_id', 'status'];
+    protected $fillable = ['id', 'tjual_id', 'status', 'validon', 'nourut'];
 
     public function tjual()
     {

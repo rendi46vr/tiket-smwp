@@ -1,9 +1,16 @@
 @extends('layouts.app')
 
+@section('style')
+
+@endsection
 @section('content')
-
-
-<h1 class="f">Pembelian Tiket Online Acara SLF <br> Sekolah Maitreyawira</h1>
+<?php
+function rupiah($angka)
+{
+    $hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
+    return $hasil_rupiah;
+} ?>
+<h1 class="f">Pembelian Tiket Online Event Sriwijaya <br> Lantern Festival 2023</h1>
 
 <div class="jtiket">
     <div class="row lg-100">
@@ -14,7 +21,7 @@
                     <span class="title">{{$t->judul}}</span>
                     <div class="price">
                         <label>Mulai Dari</label>
-                        <span class="harga">Rp. {{$t->harga}}</span>
+                        <span class="harga">{{rupiah($t->harga)}}</span>
                     </div>
                 </div>
                 <div class="deskripsi">
@@ -22,6 +29,7 @@
                     <span class="desc">
                         {{$t->deskripsi}}
                     </span>
+                    {!!$data = $ds->cekdiskon($t->id)!!}
                 </div>
 
                 <div class="tiket-footer">
@@ -36,5 +44,6 @@
 
     </div>
 </div>
+
 
 @endsection

@@ -31,13 +31,27 @@ class cetakTiket extends FormRequest
     public function rules($rules = [])
     {
         $data = $data = [
-            'qty' => 'required|max:5',
+            'qty' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if ($value > 100) {
+                        $fail('Nilai tidak boleh lebih dari 100.');
+                    }
+                },
+            ],
             'tgl' => '',
             'jenis_tiket' => 'required|max:1',
         ];
         if (empty($rules)) {
             $data = [
-                'qty' => 'required|max:5',
+                'qty' => [
+                    'required',
+                    function ($attribute, $value, $fail) {
+                        if ($value > 100) {
+                            $fail('Nilai tidak boleh lebih dari 100.');
+                        }
+                    },
+                ],
                 'tgl' => '',
                 'jenis_tiket' => 'required|max:1',
             ];
@@ -46,21 +60,42 @@ class cetakTiket extends FormRequest
                 if ($rules['0'] != null) {
                     if (in_array($rules['0'], $this->checkDate)) {
                         $data = [
-                            'qty' => 'required|max:5',
+                            'qty' => [
+                                'required',
+                                function ($attribute, $value, $fail) {
+                                    if ($value > 100) {
+                                        $fail('Nilai tidak boleh lebih dari 100.');
+                                    }
+                                },
+                            ],
                             'tgl' => '',
                             'jenis_tiket' => 'required|max:1',
                         ];
                     } else {
                         $data = [
-                            'qty' => 'required|max:5',
-                            'tgl' => 'required|max:1',
+                            'qty' => [
+                                'required',
+                                function ($attribute, $value, $fail) {
+                                    if ($value > 100) {
+                                        $fail('Nilai tidak boleh lebih dari 100.');
+                                    }
+                                },
+                            ],
+                            'tgl' => '',
                             'jenis_tiket' => 'required|max:1',
                         ];
                     }
                 } else {
                     $data = [
-                        'qty' => 'required|max:5',
-                        'tgl' => 'required|number|max:1',
+                        'qty' => [
+                            'required',
+                            function ($attribute, $value, $fail) {
+                                if ($value > 100) {
+                                    $fail('Nilai tidak boleh lebih dari 100.');
+                                }
+                            },
+                        ],
+                        'tgl' => '',
                         'jenis_tiket' => 'required|max:1',
                     ];
                 }

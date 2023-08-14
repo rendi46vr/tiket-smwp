@@ -36,7 +36,7 @@
             display: flex;
             align-items: center;
             margin-left: 1mm;
-            margin-left: -10px;
+            margin-left: -2px;
             margin-bottom: 0px;
             padding-top: 0px;
         }
@@ -46,6 +46,11 @@
             margin: 1mm 0;
         }
 
+        div.tiket .img ul {
+            text-align: left;
+            margin-left: -31px
+        }
+
         div.tiket .img p.title {
             margin-left: -10px;
             text-align: center;
@@ -53,26 +58,26 @@
 
         div.logo p.title {
             margin-left: -10px;
-            margin-top: 0px;
+            margin-top: 1px;
             margin-right: -10px;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             margin-bottom: 0px;
             padding-bottom: 0;
         }
 
-        table {
+        /* table {
             margin: 0 -35px;
         }
 
         table tr td {
             width: max-content;
-        }
+        } */
 
         h3 {
             text-align: center;
-            font-size: 12px;
+            font-size: 9px;
             margin: 1px 0;
         }
 
@@ -95,6 +100,34 @@
         .right {
             margin-left: 30mm;
         }
+
+        .text-red {
+            color: #FF0000;
+        }
+
+        .text-green {
+            color: #008000;
+        }
+
+        .logoimg {
+            width: 28px;
+            margin-left: -9px;
+            margin-top: -5px;
+            height: auto;
+            position: absolute;
+            left: 0;
+        }
+
+        .nourut {
+            width: 30px;
+            margin-right: -9px;
+            margin-top: -29px;
+            height: auto;
+            text-align: right;
+            font-size: 8px;
+            position: absolute;
+            right: 0;
+        }
     </style>
 </head>
 
@@ -106,8 +139,9 @@
 
     $i = 0;
     $count = $tjual->tjual1->count();
+
     ?>
-    @foreach($tjual->tjual1 as $tiket)
+    @foreach($tikets as $tiket)
     <?php $i++; ?>
     <div class="tiket @if($i != $count)page-break @endif">
         <div class="logo" style="
@@ -116,17 +150,41 @@
                     text-align: center;
                     
                 ">
+            <img class="logoimg" src="{{   public_path('/slf.png')}}" alt="">
             <p class="title">
-                Sriwijaya <br> Latern Festival 2023
+                Sriwijaya <br> Lantern Festival 2023
             </p>
+            <p class="nourut">{{$tiket->nourut}}</p>
             <p style="margin-top:0px; margin-left: -10; margin-right: -10; font-size:9px; font-weight:bold;"><u> Lapangan Sekolah Maitreyawira </u></p>
         </div>
         <!-- format('png')->mergeString(Storage::get('/bb.png'), .3)-> -->
         <div class="img">
-            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::errorCorrection('H')->format('png')->mergeString(Storage::get('/bb.png'), .3)->size(130)->generate($tiket->id)); }} . '" />
-            <h3 class="type">@if($tjual->tiket_id == 1)Regular Day @else Premium Day @endif</h3>
-            <div style="padding: 1px; border: 1px dashed #000; margin-top: 2px; margin-bottom: 0;margin-left:-10; margin-right:-10;">
-                <p style=" font-size:7px; font-weight:700;">@if($tjual->tiket_id != 1) Tiket berlaku pad Tanggal {{$tjual->tgl}} @else Tiket berlaku untuk hari Rabu-Jumat, kecuali hari libur nasional @endif</p>
+            <!-- errorCorrection('H')->format('png')->mergeString(Storage::get('/bb.png'), .3)-> -->
+            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::size(110)->generate($tiket->id)); }} . '" />
+            @if($tjual->tiket_id == 1)
+            <h3 class="type text-green"> Regular Day </h3>
+            @else
+            <h3 class="type text-red"> Premium Day </h3>
+            @endif
+            <div style="padding: 0.5px; border: 1px dashed #000; margin-top: 2px; margin-bottom: 0;margin-left:-10; margin-right:-10;">
+                <!-- <p style=" font-size:7px; font-weight:700;">@if($tjual->tiket_id != 1) Berlaku pada Weekend Day, Libur Nasional, Opening Day dan Closing Day @else Tiket berlaku untuk hari Rabu-Jumat, kecuali hari libur nasional @endif</p> -->
+
+                <ul style=" font-size:5px; font-weight:500; "> @if($tjual->tiket_id != 1)
+                    <li>Tiket berlaku 1 orang (mulai pukul 16.00 WIB)</li>
+                    <li> Berlaku setiap hari festival (termasuk hari libur nasional, opening day, dan closing day)</li>
+                    <li>Senin & Selasa TUTUP</li>
+                    <li>Tunjukan E-Ticket ini sebagai tanda bukti masuk festival. Harap simpan dengan baik barcode terlampir. Barcode akan discan saat memasuki lokasi festival.</li>
+                    @else
+
+                    <li>Tiket berlaku 1 orang untuk hari Rabu/Kamis/Jumat (16.00 s.d. 21.00) kecuali hari libur nasional</li>
+                    <li> Senin & Selasa TUTUP
+                    </li>
+                    <li>Tunjukan E-Ticket ini sebagai tanda bukti masuk festival. Harap simpan dengan baik barcode terlampir. Barcode akan discan saat memasuki lokasi festival.
+                    </li>
+                </ul>
+                @endif
+                </p>
+
             </div>
         </div>
         <div class="footer">

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\UserController;
 use App\Models\tgltiket;
 use Illuminate\Http\Request;
+use App\Http\Controllers\DiskonController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,7 +50,7 @@ Route::get('form-pembelian/{slug}', [pembelianCon::class, 'pembelian']);
 Route::post('order', [pembelianCon::class, 'order']);
 Route::post('cqty/{qty}', [pembelianCon::class, 'qty']);
 Route::get('pembayaran/{slug}', [pembelianCon::class, 'bayar']);
-Route::get('tiket/{slug}', [pembelianCon::class, 'tiket']);
+Route::get('tiket/{slug?}', [pembelianCon::class, 'tiket']);
 Route::get('download/{slug}', [pembelianCon::class, 'download']);
 Route::get('cancel/{slug}', [pembelianCon::class, "cancelTransaction"]);
 
@@ -66,16 +67,37 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('penjualan', [UserController::class, "penjualan"]);
         Route::post('pagejual/{page}', [UserController::class, "pagejual"]);
         Route::post('searchjual/{search}', [UserController::class, "searchjual"]);
+        Route::post('/adddiskon', [DiskonController::class, 'adddiskon'])->name('adddiskon');
+        Route::get('diskon/{slug}', [DiskonController::class, 'hapus']);
+        Route::get('resend/{slug}', [DiskonController::class, 'resend']);
+
+        Route::get('penbem', [UserController::class, "penbem"]);
+        Route::post('pagepenbem/{page}', [UserController::class, "pagepenbem"]);
+        Route::post('searchpenbem/{search}', [UserController::class, "searchpenbem"]);
+
+        Route::post('cemail/{slug}', [UserController::class, "cemail"]);
+        Route::post('iscetak/{slug}', [UserController::class, "iscetak"]);
+
+        Route::get("valhp", [UserController::class, "valhp"]);
+        Route::post('admincek/{slug}', [UserController::class, "admincekproses"]);
+
+        Route::get("tampilvalidasi", [UserController::class, "tampilvalidasi"]);
+
+        Route::get("tamvalhari", [UserController::class, "tamvalhari"]);
+        Route::post("tamvalhari", [UserController::class, "tamvalhari"]);
+
+        Route::get('kirim', [UserController::class, "kirim"]);
+        Route::post('kirimtiket', [UserController::class, "kirimtiket"]);
+        Route::post('pagekirim/{page}', [UserController::class, "pagekirim"]);
     });
 });
+Route::post('cektiket/{slug}', [UserController::class, "cektiket"]);
+Route::get('belilagi', [pembelianCon::class, "belilagi"]);
+Route::get('publiccek', [pembelianCon::class, "publiccek"]);
+Route::post('publiccek/{slug}', [pembelianCon::class, "publiccekproses"]);
 
-
-
-Route::get('test', function () {
-    $tgl2 = tgltiket::where('status', 2)->pluck('tgl')->toArray();
-    if (in_array('2023-09-25', $tgl2)) {
-        echo 'sukses';
-    } else {
-        echo 'gagal';
-    }
+Route::get('valtiket', function () {
+    return view('admin.cektiket');
 });
+
+Route::get('tes', [pembelianCon::class, "metgopay"]);

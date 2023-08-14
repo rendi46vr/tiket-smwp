@@ -56,7 +56,7 @@ body {
    border: none;
 }
  .smw-logo{
-    height: 50px;
+    height: auto;
     width: 136px;
  }
 
@@ -245,6 +245,7 @@ div.smw-card-body span.harga{
   font-size:3vw;
 }
 .ftc{
+  /* color: #f23939; */
   color: #59597C;
 }
 @media (min-width:320px)  { 
@@ -590,6 +591,8 @@ div.smw-card-body span.harga{
  .footer {
    background-color: rgba(57, 100, 229, 0.1);
    padding: 20px;
+    position: sticky;
+    bottom: 0;
    
    text-align: center;
    z-index : 2

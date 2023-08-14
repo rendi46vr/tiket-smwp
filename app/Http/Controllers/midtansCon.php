@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\tjual;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\SendMail;
+use App\Mail\sendMail;
 use App\Models\tjual1;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\DiskonController;
 
 class midtansCon extends Controller
 {
@@ -36,9 +37,11 @@ class midtansCon extends Controller
                     'title' => 'Pembelian Tiket Berhasil!',
                     'subject' => 'Proses Pembayaran Berhasil!',
                     'url' => '',
-                    'body' => 'Haloo Bapak/ibu ' . $data->name . ' , Silahkan download data Tiket anda  (<a href=" ' . url('download/' . $data->id) . '">Klik Disini</a>) ',
+                    'body' => 'Haloo Bapak/ibu ' . $data->name . ' , Silahkan download data Tiket anda  (<a href=" ' . url('tiket/' . $data->id) . '">Klik Disini</a>) ',
                 ];
                 Mail::to($data->email)->send(new sendMail($sendnotif));
+                $email = new DiskonController;
+                $email->resend($data->id, false);
             } elseif ($request->transaction_status == 'pending') {
                 $ty = $request->payment_type;
                 switch ($ty) {
@@ -93,6 +96,8 @@ class midtansCon extends Controller
                         'body' => 'Haloo Bapak/ibu ' . $data->name . ' , Silahkan download data Tiket anda  (<a href=" ' . url('download/' . $data->id) . '">Klik Disini</a>)  ',
                     ];
                     Mail::to($data->email)->send(new sendMail($sendnotif));
+                    $email = new DiskonController;
+                    $email->resend($data->id, false);
                 }
             } elseif ($request->transaction_status == 'cancel') {
                 if ($data->status == 0 || $data->status == 1) {
@@ -105,6 +110,20 @@ class midtansCon extends Controller
             // return response()->json("Hai Dude, Whatsup....!");
         } else {
             return 'salah';
+        }
+    }
+    public function resend($id)
+    {
+        $data = tjual::findorFail($id);
+        if ($data->status == 2) {
+            //mail notificatiion
+            $sendnotif = [
+                'title' => 'Pembelian Tiket Berhasil!',
+                'subject' => 'Download Tiket Sekarang',
+                'url' => '',
+                'body' => 'Haloo Bapak/ibu ' . $data->name . ' , Silahkan download data Tiket anda  (<a href=" ' . url('tiket/' . $data->id) . '">Klik Disini</a>) ',
+            ];
+            Mail::to($data->email)->send(new sendMail($sendnotif));
         }
     }
 }

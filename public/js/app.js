@@ -6,24 +6,23 @@ $(document).on('click', '.reqbayar', function() {
             onSuccess: function(result) {
                 alert("Tiket akan dikirimkan di Email");
             window.location.href = baseUri('download/')+t.data('ind');
+            // location.reload();
             },
             onPending: function(result) {
                 /* You may add your own implementation here */
                 alert("Menuggu Pembayaran");
+            // location.reload();
             },
             onError: function(result) {
-
                 alert("payment failed!");
                 trig('#pn', '#bb');
             },
             onClose: function() {
-                alert('you closed the popup without finishing the payment');
+                alert('Pembayaran belom dilakukan');
             }
         })
     
 });
-
-
 
 var validated = false;
 var buton_submit = true;
@@ -32,14 +31,15 @@ var auto_focus = false;
 $(document).ready(function(){
     const qtyt = $('.qty .tambah'), qtyk = $('.qty .kurang'), qtyq = $('.qty .quantity'), harga = $('span.harga span');
     qtyt.on('click',function(){
-        let qty = +qtyq.text();
-        $.isNumeric(qty) ? '':qty=1;
-        qtyq.text(qty+1),
-        $('.msgqty').val(qty+1)
- 
-        let data = qty+1
-
-        edit('cqty/'+data,'span.harga span');
+        if(+qtyq.text() < 10    ){
+            let qty = +qtyq.text();
+            $.isNumeric(qty) ? '':qty=1;
+            qtyq.text(qty+1),
+            $('.msgqty').val(qty+1)
+            
+            let data = qty+1
+            edit('cqty/'+data,'span.harga span');
+        }
     })
     qtyk.on('click',function(){
         let qty = +qtyq.text(), tt;
@@ -204,7 +204,8 @@ function validate(a,r, b=true) {
             }
         },
         error: function(xhr) {
-            console.log(xhr);
+            // console.log(xhr);
+          
         }
     });
     return false;
@@ -228,6 +229,9 @@ function doReq(act, data ={_token:tkn()}, callback, load= false, ) {
         },
         error: function(xhr) {
             console.log(xhr);
+            if (xhr.status === 422) {
+                $('.jtt').text(xhr.responseJSON.errors.jenisTiket)
+              }
         }
     });
 }

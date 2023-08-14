@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('scripts')
 
-<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SET_YOUR_CLIENT_KEY_HERE"></script>
+<script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="{{env('mid_ckey')}}"></script>
 @endsection
 @section('content')
 <?php
 function rupiah($angka)
 {
-    $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+    $hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
     return $hasil_rupiah;
 } ?>
 <div class="row">
@@ -31,9 +31,9 @@ function rupiah($angka)
                         <tr>
                             <td>
                                 <labe class="card-label">
-                                    Tanggal Berlaku Tiket </labe>
+                                    Hari Berlaku Tiket </labe>
                             </td>
-                            <td>{{$tjual->tgljual}}
+                            <td>@if($tjual->tiket_id == 1 ) Berlaku hari Rabu, Kamis, Jumat (kecuali hari libur nasional & opening day) @else Berlaku setiap hari festival (termasuk hari libur nasional, opening day, dan closing day) @endif
 
                             </td>
                         </tr>
@@ -67,13 +67,23 @@ function rupiah($angka)
 
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                                 <labe class="card-label">
-                                    Total Bayar
+                                    Harga Tiket
                                 </labe>
                             </td>
                             <td>{{rupiah($tjual->totalbayar)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <labe class="card-label">
+                                    Biaya Layanan
+                                </labe>
+                            </td>
+                            <td>Rp 1.000
                             </td>
                         </tr>
                     </tbody>
@@ -99,7 +109,6 @@ function rupiah($angka)
         </div>
     </div>
 </div>
-
 
 
 @endsection

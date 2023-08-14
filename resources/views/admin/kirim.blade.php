@@ -24,13 +24,15 @@ Cetak Tket -
     <div class=" row">
         <div class="col-lg-4 col-md-4">
             <div class="smw-card-header"> <i class="fa fa-wpforms mr-1 i-orange" aria-hidden="true"></i>
-                Cetak Tiket
+                Kirim Tiket
+            </div>
+            <div class="msg" style="display:none;">
             </div>
             <div class="smw-card-body">
-                <form id="cetakTiket">
+                <form id="kirimtiket">
                     @csrf
                     <input type="hidden" name="uniq" value="129ewqweqe021">
-                    <div class="form-group">
+                    <div class="form-group vr-form">
                         <label for="">Jenis Tiket</label>
                         <select name="jenis_tiket" id="" class="form-control jtiket msgjenis_tiket">
                             <option hidden disabled selected>Jenis Tiket</option>
@@ -38,23 +40,27 @@ Cetak Tket -
                             <option value="2">Premium Day</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="">Tanggal </label>
-                        <input type="date" name="tgl" id="input-date" max="2023-09-30" min="2023-08-11" id="" class="form-control tgl msgtgl" placeholder="+62 ......" aria-describedby="helpId">
+                    <div class="form-group vr-form">
+                        <label for="">nama Penerima </label>
+                        <input type="name" name="name" class="form-control msgname" placeholder="Nama Penerima..">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group vr-form">
+                        <label for="">Email Penerima </label>
+                        <input type="email" name="email" class="form-control msgemail" placeholder="email">
+                    </div>
+                    <div class="form-group vr-form">
                         <label for="">Jumlah Tiket</label>
-                        <input type="number" name="qty" max="1000" id="" class="form-control msgqty" placeholder="1000" aria-describedby="helpId">
+                        <input type="number" name="qty" max="1000" class="form-control msgqty" placeholder="1000" aria-describedby="helpId">
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-orange mb-4 " type="submit">Simpan</button>
+                        <button class="btn btn-orange mb-4 " type="submit">Kirim</button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="col-lg-8 col-md-8">
             <div class="smw-card-header"> <i class="fa fa-wpforms mr-1 i-orange" aria-hidden="true"></i>
-                Tiket Tercetak
+                Tiket Terkirim
             </div>
             <div class="smw-card-body dataTiket">
                 {!! $tiket !!}
@@ -63,23 +69,16 @@ Cetak Tket -
     </div>
 </div>
 <script type="text/javascript">
-    $(document).on('click', '.iscetak', function() {
-        if (this.checked) {
-            console.log($(this).attr('id'));
-            doReq('iscetak/' + $(this).attr('id'), {
-                _token: "{{ csrf_token() }}",
-                cetak: $(this).val()
-            }, () => {});
-        } else {
-            doReq('iscetak/' + $(this).attr('id'), {
-                _token: "{{ csrf_token() }}",
-                cetak: 0
-            }, () => {});
-        }
-    });
-
     function refreshData(res) {
-        $('.dataTiket').html(res);
+        if (res.notif) {
+            const fs1 = $('.msg');
+            fs1.html('<div class="success-message mt-1 mb-1"> Tiket dikirim </div>');
+            fs1.show('fast')
+            setTimeout(function() {
+                fs1.hide('slow')
+            }, 3000);
+        }
+        $('.dataTiket').html(res.data);
     }
 
     function searchData() {
@@ -92,13 +91,6 @@ Cetak Tket -
             $(this).val(2000); // Mengatur nilai menjadi 2000 jika melebihi batas
         }
     });
-    $(document).on('change', '.jtiket', function() {
-        if (this.value == 1) {
-            $('.tgl').attr('disabled', '').val('')
-        } else {
-            $('.tgl').removeAttr('disabled')
-        }
-    })
 </script>
 
 @endsection

@@ -60,7 +60,7 @@ class order extends FormRequest
                     } else {
                         $data = [
                             'qty' => 'required|max:5',
-                            'tgl' => 'required|max:1',
+                            'tgl' => '',
                             'jenis_tiket' => 'required|max:1',
                             'name' => 'required',
                             'wa' => 'required:max:60',
@@ -70,7 +70,7 @@ class order extends FormRequest
                 } else {
                     $data = [
                         'qty' => 'required|max:5',
-                        'tgl' => 'required|number|max:1',
+                        'tgl' => '',
                         'jenis_tiket' => 'required|max:1',
                         'name' => 'required',
                         'wa' => 'required:max:60',
@@ -89,8 +89,8 @@ class order extends FormRequest
             'name.required' => 'Nama wajib disii!',
             'email.required' => 'Email Harus Diisi',
             'email.email' => 'Email harus valid',
-            'tgl.required' => "tiket berlaku hanya weekend dan libur nasional",
-            'tgl.max' => "tiket berlaku hanya weekend dan libur nasional",
+            // 'tgl.required' => "Hanya weekend dan libur nasional",
+            // 'tgl.max' => "Hanya weekend dan libur nasional",
         ];
     }
 

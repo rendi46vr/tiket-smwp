@@ -19,7 +19,7 @@
 <?php
 function rupiah($angka)
 {
-    $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+    $hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
     return $hasil_rupiah;
 } ?>
 <form id="order">
@@ -60,12 +60,12 @@ function rupiah($angka)
                             <labe class="card-label">
                                 Total Harga
                             </labe>
-                            <span class="harga"><span data-harga="{{$tiket->harga}}">{{rupiah($tiket->harga)}}</span></span>
+                            <span class="harga"><span data-harga="{{$tiket->harga}}">{{$harga}}</span></span>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="info d-flex justify-content-start m-4">
-                            <p>Tiket @if($tiket->id == 1) Regular Day Yang dibeli Berlaku pada {{$tiket->deskripsi}} (Kecuali, hari libur nasional) @else Premium Day hanya berlaku pada tanggal yang dipilih pada Weekend day dan hari libur nasional @endif , Pastikan email diisi dengan benar kami akan mengirimkan tiket ke email anda.</p>
+                            <p>Tiket {{$tiket->deskripsi}}</p>
                         </div>
                     </div>
                 </div>
