@@ -8,7 +8,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendMail;
 use App\Models\tjual;
+use App\Models\tjual1;
 use App\Tools\tools;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DiskonController extends Controller
 {
@@ -132,7 +134,12 @@ class DiskonController extends Controller
                 'url' => '',
                 'body' => 'Haloo Bapak/ibu ' . $data->name . ' , Silahkan download data Tiket anda  (<a href=" ' . url('tiket/' . $data->id) . '">Klik Disini</a>) ',
             ];
-            Mail::to($data->email)->send(new sendMail($sendnotif));
+
+            $tjual = $data;
+            $tikets = tjual1::where("tjual_id", $id)->orderby('nourut', 'asc')->get();
+            $pdf = Pdf::loadView('download', compact('tjual', 'tikets'))->setPaper('A8', 'portrait')
+                ->setWarnings(false);
+            Mail::to($data->email)->send(new sendMail($sendnotif, $tikets));
         }
         if ($false) {
 

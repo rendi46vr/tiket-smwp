@@ -46,6 +46,12 @@ Cetak Tket -
                         <label for="">Jumlah Tiket</label>
                         <input type="number" name="qty" max="1000" id="" class="form-control msgqty" placeholder="1000" aria-describedby="helpId">
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="gratis" value="" id="gratis">
+                        <label class="form-check-label" for="grtais">
+                            Tiket Gratis
+                        </label>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <button class="btn btn-orange mb-4 " type="submit">Simpan</button>
                     </div>

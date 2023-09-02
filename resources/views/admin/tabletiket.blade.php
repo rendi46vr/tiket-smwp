@@ -17,7 +17,7 @@
             <td>{{$loop->iteration}}</td>
             <td>{{$t->created_at}}</td>
             <!-- <td>{{$t->tgl == '' ? "Rabu,Kamis & Jum'at" : "Sabtu, Minggu, Libur Nasional, Openening day & Closing day"}}</td> -->
-            <td>{{$t->tiket_id == 1 ? "Regular Day" : "Premiu Day"}}</td>
+            <td>{{$t->tiket_id == 1 ? "Regular Day" : "Premiu Day"}} @if($t->status == 5) (Gratis) @endif</td>
             <td>{{$t->qty}}</td>
             <td>{{$t->user->name}}</td>
             <td> <a href="{{url('download/'.$t->id)}}"> <i class="fa fa-download text-success" aria-hidden="true"></i></a></td>

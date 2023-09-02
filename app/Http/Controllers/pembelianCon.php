@@ -311,17 +311,13 @@ class pembelianCon extends Controller
         // dd($data);
     }
 
-
-
     public function publiccek()
     {
         return view('cek');
     }
     public function publiccekproses($slug)
     {
-
         try {
-            // return 'ok';
             $tiket = tjual1::with('tjual')->findorFail($slug);
             $jentiket =  $tiket->tjual->tiket_id == 2 ? "Premium Day" : "Regular Day";
             $tglpremium = tgltiket::where('status', 2)->pluck('tgl')->toArray();

@@ -10,6 +10,7 @@ use App\Models\tjual1;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\DiskonController;
+use App\Models\tiket;
 
 class midtansCon extends Controller
 {
@@ -23,14 +24,22 @@ class midtansCon extends Controller
                 $data->update([
                     "status" => 2,
                 ]);
+                $undian = tiket::find(1);
+                $indexundian = $undian->indexundian;
                 Cookie::forget('bayar');
                 for ($i = 1; $i <= $data->qty; $i++) {
+                    $uu = ++$indexundian;
+
                     tjual1::create([
                         'id' => Str::uuid(),
                         'tjual_id' => $data->id,
-                        'status' => 0
+                        'status' => 0,
+                        "noundian" => $uu
                     ]);
                 }
+                $undian->update([
+                    "indexundian" => $uu
+                ]);
                 //send Notification if success
                 //mail notificatiion
                 $sendnotif = [
@@ -80,13 +89,23 @@ class midtansCon extends Controller
                     $data->update([
                         "status" => 2,
                     ]);
+                    $undian = tiket::find(1);
+                    $indexundian = $undian->indexundian;
+                    Cookie::forget('bayar');
                     for ($i = 1; $i <= $data->qty; $i++) {
+                        $uu = ++$indexundian;
+
                         tjual1::create([
                             'id' => Str::uuid(),
                             'tjual_id' => $data->id,
-                            'status' => 0
+                            'status' => 0,
+                            "noundian" => $uu
+
                         ]);
                     }
+                    $undian->update([
+                        "indexundian" => $uu
+                    ]);
                     //send Notification if success
                     //mail notificatiion
                     $sendnotif = [

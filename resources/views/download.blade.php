@@ -36,7 +36,7 @@
             display: flex;
             align-items: center;
             margin-left: 1mm;
-            margin-left: -2px;
+            margin-left: 3px;
             margin-bottom: 0px;
             padding-top: 0px;
         }
@@ -75,10 +75,32 @@
             width: max-content;
         } */
 
-        h3 {
+        h3,
+        h5,
+        h6,
+        h2 {
             text-align: center;
+        }
+
+        h3 {
             font-size: 9px;
             margin: 1px 0;
+
+        }
+
+        .h2 {
+            font-size: 11px;
+            margin: 1px 0;
+
+        }
+
+        h5 {
+            font-size: 7px;
+        }
+
+        h6 {
+            font-size: 6px;
+            margin: 0px;
         }
 
         div.footer {
@@ -155,40 +177,42 @@
                 Sriwijaya <br> Lantern Festival 2023
             </p>
             <p class="nourut">{{$tiket->nourut}}</p>
-            <p style="margin-top:0px; margin-left: -10; margin-right: -10; font-size:9px; font-weight:bold;"><u> Lapangan Sekolah Maitreyawira </u></p>
+            <p style="margin-top:0px; margin-left: -10; margin-right: -10; margin-bottom:5px; font-size:9px; font-weight:bold;"><u> Lapangan Sekolah Maitreyawira </u></p>
         </div>
         <!-- format('png')->mergeString(Storage::get('/bb.png'), .3)-> -->
         <div class="img">
             <!-- errorCorrection('H')->format('png')->mergeString(Storage::get('/bb.png'), .3)-> -->
-            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::size(110)->generate($tiket->id)); }} . '" />
+            <img class="center" src="data:image/png;base64,' . {{ base64_encode(QrCode::size(100)->generate($tiket->id)); }} . '" />
             @if($tjual->tiket_id == 1)
-            <h3 class="type text-green"> Regular Day </h3>
+            <h3 class="type @if($tiket->noundian != null) h2 @endif text-green"> Regular Day </h3>
             @else
-            <h3 class="type text-red"> Premium Day </h3>
+            <h3 class="type @if($tiket->noundian != null) h2 @endif text-red"> Premium Day </h3>
             @endif
-            <div style="padding: 0.5px; border: 1px dashed #000; margin-top: 2px; margin-bottom: 0;margin-left:-10; margin-right:-10;">
-                <!-- <p style=" font-size:7px; font-weight:700;">@if($tjual->tiket_id != 1) Berlaku pada Weekend Day, Libur Nasional, Opening Day dan Closing Day @else Tiket berlaku untuk hari Rabu-Jumat, kecuali hari libur nasional @endif</p> -->
 
-                <ul style=" font-size:5px; font-weight:500; "> @if($tjual->tiket_id != 1)
+            <h3>{{$tjual->info}}</h3>
+
+            <div style="padding: 0.5px; border: 1px dashed #000; margin-top: 2px; margin-bottom: 0;margin-left:-10; margin-right:-10; ">
+                <!-- <p style=" font-size:7px; font-weight:700;">@if($tjual->tiket_id != 1) Berlaku pada Weekend Day, Libur Nasional, Opening Day dan Closing Day @else Tiket berlaku untuk hari Rabu-Jumat, kecuali hari libur nasional @endif</p> -->
+                <ul style=" font-size: 5.1px; font-weight:500; margin-bottom : 2px;">
+                    @if($tjual->tiket_id != 1)
                     <li>Tiket berlaku 1 orang (mulai pukul 16.00 WIB)</li>
                     <li> Berlaku setiap hari festival (termasuk hari libur nasional, opening day, dan closing day)</li>
                     <li>Senin & Selasa TUTUP</li>
-                    <li>Tunjukan E-Ticket ini sebagai tanda bukti masuk festival. Harap simpan dengan baik barcode terlampir. Barcode akan discan saat memasuki lokasi festival.</li>
+                    <li>Tunjukan E-Ticket ini sebagai tanda bukti masuk festival. Harap simpan dengan baik barcode terlampir. Barcode akan discan saat memasuki lokasi festival.</li>
                     @else
-
                     <li>Tiket berlaku 1 orang untuk hari Rabu/Kamis/Jumat (16.00 s.d. 21.00) kecuali hari libur nasional</li>
-                    <li> Senin & Selasa TUTUP
-                    </li>
-                    <li>Tunjukan E-Ticket ini sebagai tanda bukti masuk festival. Harap simpan dengan baik barcode terlampir. Barcode akan discan saat memasuki lokasi festival.
-                    </li>
+                    <li> Senin & Selasa TUTUP </li>
+                    <li>Tunjukan E-Ticket ini sebagai tanda bukti masuk festival. Harap simpan dengan baik barcode terlampir. Barcode akan discan saat memasuki lokasi festival. </li>
+                    @endif
                 </ul>
-                @endif
-                </p>
 
             </div>
         </div>
         <div class="footer">
-            <div class="contact">
+            @if($tiket->noundian != null)
+            <h5 style="margin-top: 4px;">{{$tiket->noundian}}</h5>
+            @endif
+            <div class="contact" style="margin-top: 0;">
                 <!-- <p style="color: forestgreen">Whatsapp</p> -->
                 IG : maitreyawiraschoolpalembang / sriwijayalanternnfestival
             </div>

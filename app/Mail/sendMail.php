@@ -11,15 +11,17 @@ class sendMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
+    public $pdf;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($data, $pdf)
     {
         $this->data = $data;
+        $this->pdf = $pdf;
     }
 
     /**
@@ -30,6 +32,7 @@ class sendMail extends Mailable
     public function build()
     {
         return $this->subject($this->data['subject'])
-            ->view('tiketmail');
+            ->view('tiketmail')
+            ->attachData($this->pdf, 'Tiket slf.pdf', ['mime' => 'application/pdf']);
     }
 }

@@ -12,7 +12,7 @@ class tjual extends Model
     use HasFactory;
 
     public $incrementing = false;
-    protected $fillable = ['id', 'np', 'name', 'wa', 'email', 'tgl', 'tgljual', 'qty', 'totalbayar', 'token', 'status', 'tiket_id', 'user_id', 'iscetak'];
+    protected $fillable = ['id', 'np', 'name', 'wa', 'email', 'tgl', 'tgljual', 'qty', 'totalbayar', 'token', 'status', 'tiket_id', 'user_id', 'iscetak', "info"];
 
 
     public function tjual1()

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use SebastianBergmann\CodeCoverage\Node\CrapIndex;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendMail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -98,7 +99,7 @@ class UserController extends Controller
         // if (auth()->user()->role < 2) {
         //     $tiket = tjual::with('user')->where('status', 4)->where('user_id', auth()->user()->id)->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
         // } else {
-        $tiket = tjual::with('user')->where('status', 4)->where('user_id', '!=', null)->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
+        $tiket = tjual::with('user')->where('status', 4)->where('user_id', '!=', null)->orwhere('info', '!=', null)->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
         // }
 
         $pagination = tools::ApiPagination($tiket->lastPage(), $page, 'pagetiket');
@@ -128,19 +129,40 @@ class UserController extends Controller
         $validasiData['id'] = Str::uuid();
         $validasiData['tiket_id'] = $paket->id;
         $validasiData['user_id'] = $user->id;
-        $data = tjual::create($validasiData);
+        if ($request->has('gratis')) {
+            $validasiData['status'] = 5;
+            $validasiData['info'] = "Not for Sale";
+        }
+        $undian = tiket::find(1);
+        $indexundian = $undian->indexundian;
+
+
 
         $index = $paket->index;
         $paket->update([
             "index" => $index + $validasiData['qty'],
         ]);
+        $data = tjual::create($validasiData);
+
+
         $paket->save();
         for ($i = 1; $i <= $data->qty; $i++) {
+            if (!$request->has('gratis')) {
+                $uu = ++$indexundian;
+            } else {
+                $uu = null;
+            }
             tjual1::create([
                 'id' => Str::uuid(),
                 'tjual_id' => $data->id,
                 'status' => 0,
-                'nourut' => $index + $i
+                'nourut' => $index + $i,
+                "noundian" => $uu
+            ]);
+        }
+        if (!$request->has('gratis')) {
+            $undian->update([
+                "indexundian" => $uu
             ]);
         }
         return $this->datatiket();
@@ -267,14 +289,29 @@ class UserController extends Controller
 
                     ]);
                 } else {
-                    $berlaku = $tiket->tjual->tiket_id == 1 ? "Rabu-Jum'at (Kecuali Libur Nasional)" : "Weekend day & Libur Nasional";
-                    return  response()->json([
-                        "status" => 'pending',
-                        "data" => $tiket,
-                        "berlaku" => $berlaku,
-                        "jentiket" => $jentiket,
 
-                    ]);
+                    if (in_array(date('Y-m-d'), $tglregular)) {
+                        $tiket->validon = date('Y-m-d  H:i:s');
+                        // $tiket->status = 2;
+                        $waktu = Carbon::parse($tiket->validon);
+                        $tiket->status = 2;
+                        $tiket->save();
+                        return  response()->json([
+                            "status" => 'success',
+                            "data" => $tiket,
+                            "jentiket" => $jentiket,
+                            "time" => $waktu->format('H:i A'),
+                        ]);
+                    } else {
+                        $berlaku = $tiket->tjual->tiket_id == 1 ? "Rabu-Jum'at (Kecuali Libur Nasional)" : " Weekend day & Libur Nasional";
+                        return  response()->json([
+                            "status" => 'pending',
+                            "data" => $tiket,
+                            "berlaku" => $berlaku,
+                            "jentiket" => $jentiket,
+
+                        ]);
+                    }
                 }
             }
         } catch (\Throwable $th) {
@@ -286,39 +323,57 @@ class UserController extends Controller
                     return $text;
                 }
             }
+            function checkStringLength($string)
+            {
+                $panjang = strlen($string);
+
+                if ($panjang < 30) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
             try {
-                $tiket = tjual1::where("id", 'like', "%" . removeCharacters($slug, 4) . "%")->firstOrFail();
-                $jentiket =  $tiket->tjual->tiket_id == 2 ? "Premium Day" : "Regular Day";
+                $newSlug = removeCharacters($slug, 4);
+                if (checkStringLength($newSlug)) {
+                    $tiket = tjual1::where("id", 'like', "%" . removeCharacters($slug, 4) . "%")->firstOrFail();
+                    $jentiket =  $tiket->tjual->tiket_id == 2 ? "Premium Day" : "Regular Day";
 
-                if ($tiket->status == 0  ||  $tiket->status == 4  ||  $tiket->status == 5) {
-                    $tiket->validon = date('Y-m-d  H:i:s');
-                    $tiket->status = 2;
-                    $waktu = Carbon::parse($tiket->validon);
-                    $tiket->status = 2;
-                    $tiket->save();
-                    return  response()->json([
-                        "status" => 'success',
-                        "data" => $tiket,
-                        "jentiket" => $jentiket,
-                        "time" => $waktu->format('H:i A'),
-                    ]);
-                } elseif ($tiket->status == 2) {
+                    if ($tiket->status == 0  ||  $tiket->status == 4  ||  $tiket->status == 5) {
+                        $tiket->validon = date('Y-m-d  H:i:s');
+                        $tiket->status = 2;
+                        $waktu = Carbon::parse($tiket->validon);
+                        $tiket->status = 2;
+                        $tiket->save();
+                        return  response()->json([
+                            "status" => 'success',
+                            "data" => $tiket,
+                            "jentiket" => $jentiket,
+                            "time" => $waktu->format('H:i A'),
+                        ]);
+                    } elseif ($tiket->status == 2) {
 
-                    $dateTimeString = $tiket->validon;
-                    $format = 'Y-m-d H:i:s';
-                    $dateTime = Carbon::createFromFormat($format, $dateTimeString);
-                    $formattedDateTime = $dateTime->format('d M Y, H:i A');
-                    $today = false;
-                    if ($dateTime->isToday()) {
-                        $formattedDateTime = "Hari ini Jam " . $dateTime->format('H:i A');
-                        $today = true;
+                        $dateTimeString = $tiket->validon;
+                        $format = 'Y-m-d H:i:s';
+                        $dateTime = Carbon::createFromFormat($format, $dateTimeString);
+                        $formattedDateTime = $dateTime->format('d M Y, H:i A');
+                        $today = false;
+                        if ($dateTime->isToday()) {
+                            $formattedDateTime = "Hari ini Jam " . $dateTime->format('H:i A');
+                            $today = true;
+                        }
+                        return response()->json([
+                            "status" => 'used',
+                            "data" => $tiket,
+                            "jentiket" => $jentiket,
+                            "time" => "Digunakan Pada " . $formattedDateTime
+
+                        ]);
                     }
-                    return response()->json([
-                        "status" => 'used',
-                        "data" => $tiket,
-                        "jentiket" => $jentiket,
-                        "time" => "Digunakan Pada " . $formattedDateTime
-
+                } else {
+                    return  response()->json([
+                        "status" => 'invalid',
+                        "data" => ''
                     ]);
                 }
             } catch (\Throwable $th) {
@@ -407,7 +462,7 @@ class UserController extends Controller
     }
     public function datakirim($msg = null, $page = 1)
     {
-        $tiket = tjual::with('user')->where('status', 5)->where('user_id', '!=', null)->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
+        $tiket = tjual::with('user')->where('status', 5)->where('user_id', '!=', null)->where('info', '=', null)->orderby('created_at', 'desc')->paginate(10, ['*'], null, $page);
 
         $pagination = tools::ApiPagination($tiket->lastPage(), $page, 'pagekirim');
         return view('admin.tablekirim', compact('tiket', 'pagination'))->render();
@@ -433,18 +488,23 @@ class UserController extends Controller
         $data = tjual::create($validasiData);
 
         $index = $paket->indexg;
+
         for ($i = 1; $i <= $data->qty; $i++) {
             $index = ++$index;
+
             $create = tjual1::create([
                 'id' => Str::uuid(),
                 'tjual_id' => $data->id,
                 'status' => 0,
-                'nourut' => $index
+                'nourut' => $index,
+                "noundian" => null
+
             ]);
         }
         $paket->update([
             "indexg" => $index,
         ]);
+
         $paket->save();
 
         $sendnotif = [
@@ -453,7 +513,11 @@ class UserController extends Controller
             'url' => '',
             'body' => 'Haloo Bapak/ibu ' . $data->name . ' , Silahkan download data Tiket anda  (<a href=" ' . url('tiket/' . $data->id) . '">Klik Disini</a>) ',
         ];
-        Mail::to($data->email)->send(new sendMail($sendnotif));
+        $tjual = $data;
+        $tikets = tjual1::where("tjual_id", $data->id)->orderby('nourut', 'asc')->get();
+        $pdf = Pdf::loadView('download', compact('tjual', 'tikets'))->setPaper('A8', 'portrait')
+            ->setWarnings(false);
+        Mail::to($data->email)->send(new sendMail($sendnotif, $tikets));
         return response()->json([
             "data" => $this->datakirim(),
             "notif" => true,
@@ -537,15 +601,29 @@ class UserController extends Controller
                         "pesan" => "Digunakan Pada " . $formattedDateTime,
                     ]);
                 } else {
-                    $berlaku = $tiket->tjual->tiket_id == 1 ? "Rabu-Jum'at (Kecuali Libur Nasional)" : "Weekend day & Libur Nasional";
-                    $pesan = '1';
-                    $tiket->tjual->tiket_id == 2 ? $pesan = "Tiket berlaku 1 orang (mulai pukul 16.00 WIB) <br>
+                    if (in_array(date('Y-m-d'), $tglregular)) {
+                        $tiket->validon = date('Y-m-d  H:i:s');
+                        $tiket->status = 2;
+                        $tiket->save();
+                        $pesan = '1';
+                        $tiket->tjual->tiket_id  == 2 ? $pesan = "Tiket berlaku 1 orang (mulai pukul 16.00 WIB)" : $pesan = "Tiket berlaku 1 orang untuk hari Rabu/Kamis/Jumat (16.00 s.d. 21.00) kecuali hari libur nasional";
+                        return  response()->json([
+                            "status" => 'success',
+                            "jentiket" => $jentiket,
+                            "pesan" => $pesan
+                        ]);
+                    } else {
+                        $berlaku = $tiket->tjual->tiket_id == 1 ? "Rabu-Jum'at (Kecuali Libur Nasional)" : "Weekend day & Libur Nasional";
+                        $pesan = '1';
+                        $tiket->tjual->tiket_id == 2 ? $pesan = "Tiket berlaku 1 orang (mulai pukul 16.00 WIB) <br>
+                    
                     Berlaku setiap hari festival (termasuk hari libur nasional, opening day, dan closing day)" : $pesan = "Tiket berlaku 1 orang untuk hari Rabu/Kamis/Jumat (16.00 s.d. 21.00) Opening Day kecuali hari libur nasional";
-                    return  response()->json([
-                        "status" => 'pending',
-                        "jentiket" => $jentiket,
-                        "pesan" => $pesan
-                    ]);
+                        return  response()->json([
+                            "status" => 'pending',
+                            "jentiket" => $jentiket,
+                            "pesan" => $pesan
+                        ]);
+                    }
                 }
             }
         } catch (\Throwable $th) {
